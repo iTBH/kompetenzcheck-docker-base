@@ -1,0 +1,39 @@
+variables:
+    CONTAINER_REGISTRY: collaborating.tuhh.de:5005
+    CONTAINER_TEST_IMAGE: ${CONTAINER_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}:${CI_COMMIT_REF_SLUG}
+    CONTAINER_RELEASE_IMAGE: ${CONTAINER_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}:latest
+    DOCKER_FILE_PATH: .
+
+stages:
+    - build
+    - review
+    - deploy
+    - production
+
+build_review_image:
+    stage: build
+    before_script:
+        - git submodule update --init --recursive
+        - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CONTAINER_REGISTRY}
+    only:
+        - branches
+    except:
+        - master
+    tags:
+        - floki_build
+    script:
+        - docker build --pull -t ${CONTAINER_TEST_IMAGE} ${DOCKER_FILE_PATH}
+        - docker push ${CONTAINER_TEST_IMAGE}
+
+build_image:
+    stage: build
+    before_script:
+        - git submodule update --init --recursive
+        - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CONTAINER_REGISTRY}
+    only:
+        - master
+    tags:
+        - floki_build
+    script:
+        - docker build --no-cache --pull -t ${CONTAINER_RELEASE_IMAGE} ${DOCKER_FILE_PATH}
+        - docker push ${CONTAINER_RELEASE_IMAGE}
