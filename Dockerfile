@@ -22,9 +22,3 @@ RUN curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && chm
 RUN curl https://getcaddy.com | bash -s personal
 
 RUN npm install -g webpack cross-env laravel-mix gulp
-
-# Install webpack
-RUN npm install \
-	&& npm run dev \
-	&& npm cache clean \
-	&& composer install
