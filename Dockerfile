@@ -24,8 +24,8 @@ RUN curl https://getcaddy.com | bash -s personal
 
 #RUN npm install -g webpack cross-env laravel-mix gulp
 
-RUN echo where node
-RUN echo where npm
+RUN echo $(where node)
+RUN echo $(where npm)
 
 RUN echo "post_max_size=1G" > /usr/local/etc/php/php.ini \
     && echo "upload_max_filesize=1G" >> /usr/local/etc/php/php.ini \
