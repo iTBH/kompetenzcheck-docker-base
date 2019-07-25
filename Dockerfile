@@ -9,6 +9,8 @@ RUN apt-get update \
 	&& docker-php-ext-install -j$(nproc) pdo_mysql gd opcache \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN /usr/bin/nodejs --version
+
 # Install wkhtmltopdf
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
 	&& tar xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
