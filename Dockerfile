@@ -4,12 +4,13 @@ FROM php:fpm
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 \
 	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-	&& apt-get install -y --no-install-recommends nodejs \
+	&& apt-get install -y --no-install-recommends nodejs npm \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) pdo_mysql gd opcache \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN /usr/bin/nodejs --version
+RUN which npm
+RUN which node
 
 # Install wkhtmltopdf
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
@@ -26,8 +27,6 @@ RUN curl https://getcaddy.com | bash -s personal
 
 #RUN npm install -g webpack cross-env laravel-mix gulp
 
-RUN which npm
-RUN which node
 
 RUN echo "post_max_size=1G" > /usr/local/etc/php/php.ini \
     && echo "upload_max_filesize=1G" >> /usr/local/etc/php/php.ini \
