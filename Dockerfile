@@ -3,13 +3,9 @@ FROM php:fpm
 # Install php extensions
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 npm \
-	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-	&& apt-get install -y --no-install-recommends nodejs \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) pdo_mysql gd opcache \
 	&& rm -rf /var/lib/apt/lists/*
-
-RUN npm install npm@latest -g
 
 # Install wkhtmltopdf
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
@@ -23,6 +19,16 @@ RUN curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && chm
 
 # Install caddy webserver
 RUN curl https://getcaddy.com | bash -s personal
+
+ENV NODE_VERSION 6.17.1
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash \
+	&& . /root/.bashrc \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
+ENV PATH /root/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
 
 RUN npm install -g webpack cross-env laravel-mix gulp
 
