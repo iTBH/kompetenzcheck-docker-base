@@ -2,17 +2,13 @@ FROM php:fpm
 
 # Install php extensions
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 \
-#	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-#	&& apt-get install -y --no-install-recommends nodejs \
+	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 npm \
+	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+	&& apt-get install -y --no-install-recommends nodejs \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) pdo_mysql gd opcache \
 	&& rm -rf /var/lib/apt/lists/*
 
-
-RUN curl https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get -y --no-install-recommends install nodejs
-RUN apt-get -y --no-install-recommends install npm
 
 RUN npm install npm@latest -g
 
@@ -29,7 +25,7 @@ RUN curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && chm
 # Install caddy webserver
 RUN curl https://getcaddy.com | bash -s personal
 
-RUN npm install -g webpack cross-env laravel-mix gulp
+# RUN npm install -g webpack cross-env laravel-mix gulp
 
 RUN echo "post_max_size=1G" > /usr/local/etc/php/php.ini \
     && echo "upload_max_filesize=1G" >> /usr/local/etc/php/php.ini \
