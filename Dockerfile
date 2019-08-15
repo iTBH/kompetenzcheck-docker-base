@@ -10,7 +10,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt install nodejs
 RUN apt install npm
 
