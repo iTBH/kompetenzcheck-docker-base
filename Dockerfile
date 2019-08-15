@@ -11,8 +11,8 @@ RUN apt-get update \
 
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt install nodejs
-RUN apt install npm
+RUN apt-get -y --no-install-recommends install nodejs
+RUN apt-get -y --no-install-recommends install npm
 
 RUN npm install npm@latest -g
 
