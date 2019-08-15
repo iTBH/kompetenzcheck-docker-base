@@ -1,15 +1,15 @@
 FROM php:fpm
 
-RUN npm install npm@latest -g
-
 # Install php extensions
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 \
+	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 npm \
 	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
 	&& apt-get install -y --no-install-recommends nodejs \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) pdo_mysql gd opcache \
 	&& rm -rf /var/lib/apt/lists/*
+
+RUN npm install npm@latest -g
 
 # Install wkhtmltopdf
 RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz \
