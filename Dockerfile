@@ -2,12 +2,17 @@ FROM php:fpm
 
 # Install php extensions
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 npm \
-	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-	&& apt-get install -y --no-install-recommends nodejs \
+	&& apt-get install -y --no-install-recommends apt-transport-https gnupg zip unzip git libjpeg-dev libpng-dev libfreetype6-dev libmcrypt-dev libxml2-dev wget libxrender1 libfontconfig1 libxext6 libssl1.0 \
+#	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+#	&& apt-get install -y --no-install-recommends nodejs \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) pdo_mysql gd opcache \
 	&& rm -rf /var/lib/apt/lists/*
+
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | -E bash -
+RUN apt install nodejs
+RUN apt install npm
 
 RUN npm install npm@latest -g
 
