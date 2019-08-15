@@ -22,6 +22,7 @@ RUN curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && chm
 # Install caddy webserver
 RUN curl https://getcaddy.com | bash -s personal
 
+RUN npm i npm@latest -g
 RUN npm install -g webpack cross-env laravel-mix gulp
 
 RUN echo "post_max_size=1G" > /usr/local/etc/php/php.ini \
