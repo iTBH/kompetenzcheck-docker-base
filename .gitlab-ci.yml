@@ -14,7 +14,7 @@ build_review_image:
     stage: build
     before_script:
         - git submodule update --init --recursive
-        - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CONTAINER_REGISTRY}
+        - docker login -u gitlab-ci-token -p ${CI_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
     only:
         - branches
     except:
@@ -29,7 +29,7 @@ build_image:
     stage: build
     before_script:
         - git submodule update --init --recursive
-        - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CONTAINER_REGISTRY}
+        - docker login -u gitlab-ci-token -p ${CI_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
     only:
         - master
     tags:
